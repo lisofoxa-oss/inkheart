@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Чернильное сердце · Аудиокнига</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0e0c0a;--bg2:#161310;--bg3:#1e1a15;
+  --ink:#c8a96e;--ink2:#dfc088;--ink3:#a8884a;--ink-dim:#7a6838;
+  --ink-glow:rgba(200,169,110,0.12);--ink-glow2:rgba(200,169,110,0.06);
+  --red:#8b3a3a;--red2:#a84a4a;
+  --text:#d8d0c0;--text2:#a89a82;--text3:#6a5e4a;--text4:#4a4030;
+  --border:#2a2418;--border2:#3a3228;
+}
+body{font-family:'Lora',serif;color:var(--text);background:var(--bg);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,169,110,0.05) 0%,transparent 50%),
+  radial-gradient(ellipse at 20% 80%,rgba(139,58,58,0.04) 0%,transparent 40%)}
+.page{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 16px 80px}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:var(--ink);opacity:0;animation:pd linear infinite}
+@keyframes pd{0%{opacity:0;transform:translateY(100vh) scale(0)}15%{opacity:.4}85%{opacity:.3}100%{opacity:0;transform:translateY(-5vh) scale(.5)}}
+.cover{padding:50px 0 30px;text-align:center}
+.book-3d{perspective:800px;display:inline-block;margin-bottom:30px}
+.book-wrap{width:200px;height:290px;position:relative;transform:rotateY(-12deg);transform-style:preserve-3d;transition:transform .6s}
+.book-wrap:hover{transform:rotateY(-4deg)}
+.book-front{position:absolute;inset:0;background:linear-gradient(160deg,#2a1810,#1a0e08 40%,#2a1810);border-radius:2px 8px 8px 2px;box-shadow:6px 6px 20px rgba(0,0,0,.6),inset 0 0 60px rgba(0,0,0,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border-left:4px solid #3a2a18;overflow:hidden}
+.book-front::before{content:'';position:absolute;inset:8px;border:1px solid rgba(200,169,110,.15);border-radius:2px;pointer-events:none}
+.book-spine{position:absolute;left:-20px;top:0;bottom:0;width:20px;background:linear-gradient(90deg,#1a0e06,#2a1810);transform:rotateY(90deg);transform-origin:right;border-radius:2px 0 0 2px}
+.book-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--ink2);text-align:center;line-height:1.2;margin-bottom:8px;text-shadow:0 0 20px var(--ink-glow)}
+.book-author{font-size:12px;color:var(--ink3);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.book-ornament{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--ink3),transparent);margin-bottom:16px}
+.book-icon{font-size:32px;opacity:.6}
+.header-label{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,5vw,2.6rem);font-weight:700;color:var(--ink2);line-height:1.2;margin-bottom:4px}
+.header-author{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text2);font-style:italic;margin-bottom:20px}
+.header-divider{width:80px;height:1px;margin:0 auto 20px;background:linear-gradient(90deg,transparent,var(--ink3),transparent)}
+.reader-info{display:inline-flex;flex-direction:column;gap:4px;padding:14px 28px;background:var(--bg2);border:1px solid var(--border);border-radius:8px}
+.reader-line{font-size:13px;color:var(--text2)}
+.reader-line strong{color:var(--ink2);font-weight:600}
+.reader-line .heart{color:var(--red2);display:inline-block;animation:beat 1.5s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.reader-note{font-size:11px;color:var(--text4);margin-top:4px;font-style:italic}
+.progress-section{margin:30px 0;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+.progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.progress-label{font-size:12px;color:var(--text3);letter-spacing:2px;text-transform:uppercase}
+.progress-count{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--ink2)}
+.progress-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ink3),var(--ink));box-shadow:0 0 10px var(--ink-glow);transition:width 1s}
+.progress-note{font-size:11px;color:var(--text4);font-style:italic;text-align:right}
+.now-playing{display:none;margin:20px 0;padding:20px;background:var(--bg2);border:1px solid var(--ink-dim);border-radius:12px;box-shadow:0 0 30px var(--ink-glow2)}
+.now-playing.active{display:block}
+.np-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.np-icon{width:40px;height:40px;border-radius:50%;background:rgba(200,169,110,.08);border:1.5px solid var(--ink-dim);display:flex;align-items:center;justify-content:center;font-size:18px}
+.np-icon.playing{animation:npp 2s infinite}
+@keyframes npp{0%,100%{box-shadow:0 0 0 rgba(200,169,110,0)}50%{box-shadow:0 0 16px var(--ink-glow)}}
+.np-info{flex:1}
+.np-label{font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase}
+.np-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink2);font-weight:600}
+.np-chapter{font-size:12px;color:var(--text3)}
+.audio-controls{display:flex;flex-direction:column;gap:8px}
+.audio-seekbar{width:100%;height:4px;border-radius:2px;background:var(--bg);appearance:none;-webkit-appearance:none;cursor:pointer;outline:none}
+.audio-seekbar::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--ink);cursor:pointer;box-shadow:0 0 6px var(--ink-glow);margin-top:-5px}
+.audio-seekbar::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:var(--border)}
+.audio-time{display:flex;justify-content:space-between;font-size:11px;color:var(--text3)}
+.audio-btns{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:4px}
+.audio-btn{background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px;padding:8px;transition:color .2s;font-family:'Lora',serif}
+.audio-btn:hover{color:var(--ink2)}
+.audio-btn.play-btn{width:48px;height:48px;border-radius:50%;background:rgba(200,169,110,.1);border:2px solid var(--ink-dim);display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .3s}
+.audio-btn.play-btn:hover{background:rgba(200,169,110,.2);border-color:var(--ink);box-shadow:0 0 20px var(--ink-glow)}
+.speed-btn{background:var(--bg);border:1px solid var(--border);color:var(--text3);padding:3px 8px;border-radius:8px;font-size:10px;cursor:pointer;font-family:'Lora',serif;transition:all .2s}
+.speed-btn:hover,.speed-btn.active{border-color:var(--ink-dim);color:var(--ink3)}
+.chapters-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.chapters-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--text)}
+.chapters-filter{display:flex;gap:6px}
+.filter-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text3);padding:4px 10px;border-radius:12px;font-size:10px;font-family:'Lora',serif;cursor:pointer;transition:all .3s}
+.filter-btn:hover{border-color:var(--ink-dim);color:var(--ink3)}
+.filter-btn.active{border-color:var(--ink3);color:var(--ink);background:rgba(200,169,110,.06)}
+.chapter-list{display:flex;flex-direction:column;gap:2px}
+.chapter{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:8px;transition:all .3s;border:1px solid transparent}
+.chapter.recorded{cursor:pointer}
+.chapter.recorded:hover{background:var(--bg2);border-color:var(--border)}
+.chapter.playing-now{background:rgba(200,169,110,.06);border-color:var(--ink-dim)}
+.ch-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;border:1.5px solid var(--border);color:var(--text3);transition:all .3s}
+.chapter.recorded .ch-num{border-color:var(--ink3);color:var(--ink);background:rgba(200,169,110,.08);box-shadow:0 0 8px var(--ink-glow)}
+.chapter.recording .ch-num{border-color:var(--red2);color:var(--red2);animation:rp 2s infinite}
+@keyframes rp{0%,100%{box-shadow:0 0 0 rgba(168,74,74,0)}50%{box-shadow:0 0 12px rgba(168,74,74,.3)}}
+.chapter.playing-now .ch-num{border-color:var(--ink2);color:var(--ink2);box-shadow:0 0 12px var(--ink-glow);animation:npp 2s infinite}
+.ch-info{flex:1;min-width:0}
+.ch-title{font-size:14px;color:var(--text2);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chapter.recorded .ch-title{color:var(--text)}
+.chapter.recording .ch-title{color:var(--red2)}
+.chapter.playing-now .ch-title{color:var(--ink2)}
+.ch-status{font-size:10px;flex-shrink:0;letter-spacing:1px;padding:3px 8px;border-radius:10px}
+.chapter.recorded .ch-status{background:rgba(200,169,110,.08);color:var(--ink3)}
+.chapter.recording .ch-status{background:rgba(168,74,74,.1);color:var(--red2)}
+.chapter.upcoming .ch-status{color:var(--text4)}
+.chapter.playing-now .ch-status{background:rgba(200,169,110,.12);color:var(--ink2)}
+.quote-section{margin:30px 0;padding:24px;text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:12px;position:relative}
+.quote-section::before{content:'\00AB';position:absolute;top:8px;left:16px;font-family:'Cormorant Garamond',serif;font-size:48px;color:var(--text4);line-height:1}
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--text2);font-style:italic;line-height:1.7;padding:0 20px}
+.quote-author{margin-top:10px;font-size:12px;color:var(--text3)}
+.footer-msg{margin-top:40px;padding:24px;text-align:center;border-top:1px solid var(--border)}
+.footer-msg p{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:8px}
+.footer-msg .sig{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--ink);font-style:italic;margin-top:12px}
+@media(max-width:400px){.book-wrap{width:160px;height:232px}.book-title{font-size:18px}.chapter{padding:10px 12px}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--ink-dim);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<div class="page">
+  <div class="cover">
+    <div class="book-3d"><div class="book-wrap"><div class="book-spine"></div><div class="book-front"><div class="book-title">Чернильное<br>сердце</div><div class="book-author">Корнелия Функе</div><div class="book-ornament"></div><div class="book-icon">🕯️</div></div></div></div>
+    <div class="header-label">аудиокнига · персональное издание</div>
+    <div class="header-title">Чернильное сердце</div>
+    <div class="header-author">Корнелия Функе</div>
+    <div class="header-divider"></div>
+    <div class="reader-info">
+      <div class="reader-line">Читает: <strong>Алёша</strong></div>
+      <div class="reader-line">Для: <strong>Алиса</strong> <span class="heart">♥</span></div>
+      <div class="reader-line" style="font-size:11px;color:var(--text3)">Эксклюзивный тираж: 1 экземпляр</div>
+      <div class="reader-note">без монтажа · без вырезок · с запинками и любовью</div>
+    </div>
+  </div>
+  <div class="progress-section">
+    <div class="progress-header"><div class="progress-label">Прогресс записи</div><div class="progress-count" id="progressCount"></div></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-note" id="progressNote"></div>
+  </div>
+  <div class="now-playing" id="nowPlaying">
+    <div class="np-header">
+      <div class="np-icon" id="npIcon">🕯️</div>
+      <div class="np-info"><div class="np-label">Сейчас играет</div><div class="np-title" id="npTitle"></div><div class="np-chapter" id="npChapter"></div></div>
+    </div>
+    <div class="audio-controls">
+      <input type="range" class="audio-seekbar" id="seekbar" min="0" max="100" value="0">
+      <div class="audio-time"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+      <div class="audio-btns">
+        <button class="audio-btn" onclick="skip(-15)">-15с</button>
+        <button class="audio-btn play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+        <button class="audio-btn" onclick="skip(15)">+15с</button>
+        <button class="speed-btn" id="speedBtn" onclick="cycleSpeed()">1×</button>
+      </div>
+    </div>
+  </div>
+  <div class="quote-section">
+    <div class="quote-text">Он читал — и слова оживали, превращаясь в образы, звуки и чувства. Каждая страница становилась целым миром.</div>
+    <div class="quote-author">— о даре Волшебного Языка</div>
+  </div>
+  <div class="chapters-header">
+    <div class="chapters-title">Главы</div>
+    <div class="chapters-filter">
+      <button class="filter-btn active" onclick="filterChapters('all',this)">Все</button>
+      <button class="filter-btn" onclick="filterChapters('recorded',this)">Записаны</button>
+      <button class="filter-btn" onclick="filterChapters('upcoming',this)">Впереди</button>
+    </div>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+  <div class="footer-msg">
+    <p>Каждая глава записана голосом — специально для тебя. Без монтажа, без вырезок, с запинками и исправлениями. Потому что это не профессиональная аудиокнига — это я, читающий для тебя.</p>
+    <p style="font-size:12px;color:var(--text3)">Мо оживлял героев, читая вслух. Я оживляю эту книгу — читая для тебя.</p>
+    <div class="sig">— Твой персональный Волшебный Язык 🕯️</div>
+  </div>
+</div>
+<audio id="audioPlayer" preload="metadata"></audio>
+<script>
+// ============================================================
+//  НАСТРОЙКИ — меняй тут когда запишешь новые главы!
+// ============================================================
+const RECORDED_UP_TO = 20;       // записано глав (включительно)
+const CURRENTLY_RECORDING = 0;   // какая пишется сейчас (0 = нет)
+
+// Путь к файлам: audio/01.m4a, audio/02.m4a ...
+const AUDIO_PATH = 'audio/';
+const AUDIO_EXT = '.m4a';
+// ============================================================
+
+const chapters = [
+  'Ночной незнакомец','Тайны','На юг','Дом полон книг','Просто картинка',
+  'Огонь и звезды','Что скрывает ночь','Одна','Коварный подлог','Логово льва',
+  'Трус','И все дальше на юг','Деревня Каприкорна','Выполненное задание',
+  'Счастье и несчастье','Тайное становится явным','Предатель','Волшебный Язык',
+  'Мрачные перспективы','Змеи и колючки','Баста','В безопасности',
+  'Ночь, полная слов','Фенолио','Фальшивый конец','Озноб и предчувствие',
+  'Всего лишь идея','Дома','Хорошее место, чтобы остаться','Болтливый Пиппо',
+  'На склоне холма','Возвращение','Служанка Каприкорна','Тайна Каприкорна',
+  'Разные цели','В доме Каприкорна','Опрометчивость','Тихие слова',
+  'Наказание для предателей','Черный конь ночи','Фарид','Мех на подоконнике',
+  'Темное место','Сообщение Фарида','Ложь во спасение','Разбуженные в ночи',
+  'В одиночестве','Сорока','Гордость Басты и хитрость Сажерука',
+  'Элинор не повезло','Жизнь на волоске','Такое хрупкое создание',
+  'Правильные слова','Огонь','Предательство, болтливость и глупость',
+  'Тень','Покинутая деревня','Тоска по дому','Домой'
+];
+
+const audio = document.getElementById('audioPlayer');
+const seekbar = document.getElementById('seekbar');
+let currentlyPlaying = -1, playbackSpeed = 1, currentFilter = 'all';
+
+function pad(n){return n.toString().padStart(2,'0')}
+function audioFile(i){return AUDIO_PATH+pad(i+1)+AUDIO_EXT}
+function getStatus(i){
+  if(CURRENTLY_RECORDING&&i+1===CURRENTLY_RECORDING)return'recording';
+  return i+1<=RECORDED_UP_TO?'recorded':'upcoming';
+}
+function statusText(s){
+  if(s==='recorded')return'▶';
+  if(s==='recording')return'● пишу...';
+  return'';
+}
+function fmtTime(s){
+  if(!s||!isFinite(s))return'0:00';
+  const m=Math.floor(s/60),sc=Math.floor(s%60);
+  return m+':'+pad(sc);
+}
+
+function renderChapters(){
+  const list=document.getElementById('chapterList');
+  list.innerHTML='';
+  chapters.forEach((title,i)=>{
+    const status=getStatus(i);
+    if(currentFilter==='recorded'&&status==='upcoming')return;
+    if(currentFilter==='upcoming'&&status!=='upcoming')return;
+    const isP=i===currentlyPlaying;
+    const el=document.createElement('div');
+    el.className='chapter '+(isP?'playing-now':status);
+    const st=isP?'🔊':'';
+    const stLabel=isP?'играет':statusText(status);
+    el.innerHTML='<div class="ch-num">'+(i+1)+'</div><div class="ch-info"><div class="ch-title">'+title+'</div></div><div class="ch-status">'+stLabel+'</div>';
+    if(status==='recorded'||isP)el.onclick=()=>playChapter(i);
+    list.appendChild(el);
+  });
+  const done=RECORDED_UP_TO,total=chapters.length;
+  document.getElementById('progressCount').textContent=done+' / '+total;
+  document.getElementById('progressFill').style.width=(done/total*100)+'%';
+  const pct=Math.round(done/total*100);
+  let note='история только начинается...';
+  if(pct>0&&pct<20)note=pct+'% — первые главы уже звучат';
+  if(pct>=20&&pct<40)note=pct+'% — Мегги бы одобрила';
+  if(pct>=40&&pct<60)note=pct+'% — Каприкорн нервничает';
+  if(pct>=60&&pct<80)note=pct+'% — Сажерук затаил дыхание';
+  if(pct>=80&&pct<100)note=pct+'% — финал близко...';
+  if(pct>=100)note='все главы записаны! книга ожила 🕯️';
+  document.getElementById('progressNote').textContent=note;
+}
+
+function filterChapters(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderChapters();
+}
+
+function playChapter(idx){
+  currentlyPlaying=idx;
+  audio.src=audioFile(idx);
+  audio.playbackRate=playbackSpeed;
+  audio.play().catch(()=>{});
+  document.getElementById('nowPlaying').classList.add('active');
+  document.getElementById('npTitle').textContent=chapters[idx];
+  document.getElementById('npChapter').textContent='Глава '+(idx+1)+' из '+chapters.length;
+  document.getElementById('npIcon').classList.add('playing');
+  document.getElementById('playBtn').textContent='⏸';
+  renderChapters();
+  document.getElementById('nowPlaying').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function togglePlay(){
+  if(audio.paused){audio.play().catch(()=>{});document.getElementById('playBtn').textContent='⏸';document.getElementById('npIcon').classList.add('playing')}
+  else{audio.pause();document.getElementById('playBtn').textContent='▶';document.getElementById('npIcon').classList.remove('playing')}
+}
+function skip(s){audio.currentTime=Math.max(0,Math.min(audio.duration||0,audio.currentTime+s))}
+function cycleSpeed(){
+  const sp=[1,1.25,1.5,0.75];
+  playbackSpeed=sp[(sp.indexOf(playbackSpeed)+1)%sp.length];
+  audio.playbackRate=playbackSpeed;
+  document.getElementById('speedBtn').textContent=playbackSpeed+'×';
+}
+
+audio.addEventListener('timeupdate',()=>{if(audio.duration){seekbar.value=(audio.currentTime/audio.duration)*100;document.getElementById('currentTime').textContent=fmtTime(audio.currentTime)}});
+audio.addEventListener('loadedmetadata',()=>{document.getElementById('duration').textContent=fmtTime(audio.duration)});
+audio.addEventListener('ended',()=>{
+  if(currentlyPlaying<RECORDED_UP_TO-1)playChapter(currentlyPlaying+1);
+  else{document.getElementById('playBtn').textContent='▶';document.getElementById('npIcon').classList.remove('playing')}
+});
+seekbar.addEventListener('input',()=>{if(audio.duration)audio.currentTime=(seekbar.value/100)*audio.duration});
+
+(function(){const c=document.getElementById('particles');for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.width=p.style.height=(1+Math.random()*2)+'px';p.style.animationDuration=(8+Math.random()*15)+'s';p.style.animationDelay=Math.random()*10+'s';c.appendChild(p)}})();
+renderChapters();
+</script>
+</body>
+</html>
